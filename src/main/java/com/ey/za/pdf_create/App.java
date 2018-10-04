@@ -8,6 +8,9 @@ public class App
 {
     public static void main( String[] args )
     {
+    	int lnPos = 733; 
+    	int leftMargin = 86; 
+    	int tabPos = 400; 
 		boolean isPageStreamsDeflated = false;
 		PdfDocument myPdf = new PdfDocument();
 
@@ -30,10 +33,69 @@ public class App
 
 		pageArr[0].streamText = Pg1; // Only the letterhead
 
-		pageArr[0].placeText(86, 703, "RICHARD VUMA MAMBA", "H1", 10, "L", 0);
-		pageArr[0].placeText(86, 693, "NO 28 KRISANT ROAD", "H1", 10, "L", 0);
-		pageArr[0].placeText(86, 683, "BRONKHORSTSPRUIT", "H1", 10, "L", 0);
-
+		pageArr[0].placeText(leftMargin, lnPos, "CERTIFIED MAIL", "H1", 10, "L", 0);
+		lnPos = 703;
+		pageArr[0].placeText(leftMargin, lnPos, "WF Zulu", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		pageArr[0].placeText(leftMargin, lnPos, "P O Box 22", "H1", 10, "L", 0);
+		pageArr[0].placeText(tabPos, lnPos, "03 September 2012", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		pageArr[0].placeText(leftMargin, lnPos, "Dube", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		pageArr[0].placeText(leftMargin, lnPos, "SOWETO", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		pageArr[0].placeText(leftMargin, lnPos, "1800", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		pageArr[0].placeText(tabPos, lnPos, "Francina Mapulane", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		pageArr[0].placeText(tabPos, lnPos, "Tel 011 800 2966", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		pageArr[0].placeText(tabPos, lnPos, "Fax 086 538 9488", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		pageArr[0].placeText(leftMargin, lnPos, "Dear Sir/Madam", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		pageArr[0].placeText(leftMargin, lnPos, "CLIENT: WILFRED FANI ZULU", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		pageArr[0].placeText(leftMargin, lnPos, "ACCOUNT NUMBER: ML0000424143", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		pageArr[0].placeText(leftMargin, lnPos, "PROPERTY DESCRIPTION: 113 PINEHAVEN ESTATES", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		pageArr[0].placeText(leftMargin, lnPos, "Building insurance cover over EFC loan - ML XXXXXXXXX", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		pageArr[0].placeText(leftMargin, lnPos, "According to our records you are residing in a sectional title residence and therefore your building", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		pageArr[0].placeText(leftMargin, lnPos, "insurance is managed by the Body Corporate.", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		pageArr[0].placeText(leftMargin, lnPos, "To safeguard our security we require a letter from the Body Corporate stating that policy is", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		pageArr[0].placeText(leftMargin, lnPos, "active, the sum insured and the interest of Eskom Finance Company SOC Ltd is noted", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		pageArr[0].placeText(leftMargin, lnPos, "with the above loan reference number.", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		pageArr[0].placeText(leftMargin, lnPos, "The confirmation letter must reach EFC within 14 working days from the date of this letter.", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		pageArr[0].placeText(leftMargin, lnPos, "The details can be e-mailed to the following address - ", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		pageArr[0].placeText(leftMargin, lnPos, "Yours faithfully,", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		pageArr[0].placeText(leftMargin, lnPos, "T. ZONDO", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		pageArr[0].placeText(leftMargin, lnPos, "LITIGATIONS MANAGER", "H1", 10, "L", 0);
+		
 		try {
 			myPdf.saveAs("C:\\Temp\\TestMe.PDF");
 		} catch (IOException e) {
@@ -52,6 +114,10 @@ public class App
 			e.printStackTrace();
 		}
 		return content;
+	}
+
+	private static int newLine(int curLine) {
+		return curLine - 12;
 	}
 
 
