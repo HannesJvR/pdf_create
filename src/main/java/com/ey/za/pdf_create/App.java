@@ -33,10 +33,17 @@ public class App
 		String Pg1 = readAllBytesJava7("C:\\1Hannes\\workspacePhoton\\pdf_create\\src\\main\\resources\\LetterHead.STM");
 
 		pageArr[0].streamText = Pg1; // Add the letterhead
-		placeSectionalTitleText(pageArr[0]);
+		placeGenericHeading(pageArr[0]);
+		switch (letterType) {
+        case "SectionalTitle":  placeSectionalTitleBody(pageArr[0]);
+                 break;
+        default: System.out.println( "Invalid letterType specified!" );
+                 break;
+    }
+		
 		
 		try {
-			myPdf.saveAs("C:\\Temp\\TestMe.PDF");
+			myPdf.saveAs("C:\\Temp\\" + letterType + ".PDF");
 		} catch (IOException e) {
 			System.out.println( "pdf_create:-->Cannot save the PDF file!" );
 			e.printStackTrace();
@@ -46,7 +53,7 @@ public class App
 
     }
     
-    private static void placeSectionalTitleText(PdfPage targetPage) {
+    private static void placeGenericHeading(PdfPage targetPage) {
     	int lnPos = 733; 
     	int leftMargin = 86; 
     	int tabPos = 400; 
@@ -81,6 +88,12 @@ public class App
 		targetPage.placeText(leftMargin, lnPos, "Building insurance cover over EFC loan - ML XXXXXXXXXXX", "H1", 10, "L", 0);
 		lnPos = newLine(lnPos);
 		lnPos = newLine(lnPos);
+		System.out.println("lnPos="+lnPos);
+    }
+
+    private static void placeSectionalTitleBody(PdfPage targetPage) {
+    	int lnPos = 487; 
+    	int leftMargin = 86; 
 		targetPage.placeText(leftMargin, lnPos, "According to our records you reside in a sectional title residence and therefore your building", "H1", 10, "L", 0);
 		lnPos = newLine(lnPos);
 		targetPage.placeText(leftMargin, lnPos, "insurance is managed by the Body Corporate.", "H1", 10, "L", 0);
