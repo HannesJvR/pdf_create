@@ -8,9 +8,10 @@ public class App
 {
     public static void main( String[] args )
     {
-    	int lnPos = 733; 
-    	int leftMargin = 86; 
-    	int tabPos = 400; 
+    	createFstLetter("SectionalTitle");
+    }
+    
+    private static void createFstLetter(String letterType) {
 		boolean isPageStreamsDeflated = false;
 		PdfDocument myPdf = new PdfDocument();
 
@@ -29,75 +30,10 @@ public class App
 		PdfPage[] pageArr = new PdfPage[myPdf.pages.size()];
 		pageArr = myPdf.pages.toArray(pageArr);
 
-		String Pg1 = readAllBytesJava7("C:\\1Hannes\\workspacePhoton\\pdf_create\\src\\main\\resources\\ML0000480137.STM");
+		String Pg1 = readAllBytesJava7("C:\\1Hannes\\workspacePhoton\\pdf_create\\src\\main\\resources\\LetterHead.STM");
 
-		pageArr[0].streamText = Pg1; // Only the letterhead
-
-		pageArr[0].placeText(leftMargin, lnPos, "CERTIFIED MAIL", "H1", 10, "L", 0);
-		lnPos = 703;
-		pageArr[0].placeText(leftMargin, lnPos, "WF Zulu", "H1", 10, "L", 0);
-		lnPos = newLine(lnPos);
-		pageArr[0].placeText(leftMargin, lnPos, "P O Box 22", "H1", 10, "L", 0);
-		pageArr[0].placeText(tabPos, lnPos, "03 September 2012", "H1", 10, "L", 0);
-		lnPos = newLine(lnPos);
-		pageArr[0].placeText(leftMargin, lnPos, "Dube", "H1", 10, "L", 0);
-		lnPos = newLine(lnPos);
-		pageArr[0].placeText(leftMargin, lnPos, "SOWETO", "H1", 10, "L", 0);
-		lnPos = newLine(lnPos);
-		pageArr[0].placeText(leftMargin, lnPos, "1800", "H1", 10, "L", 0);
-		lnPos = newLine(lnPos);
-		//pageArr[0].placeText(tabPos, lnPos, "Francina Mapulane", "H1", 10, "L", 0);
-		lnPos = newLine(lnPos);
-		lnPos = newLine(lnPos);
-		//pageArr[0].placeText(tabPos, lnPos, "Tel 011 800 2966", "H1", 10, "L", 0);
-		lnPos = newLine(lnPos);
-		//pageArr[0].placeText(tabPos, lnPos, "Fax 086 538 9488", "H1", 10, "L", 0);
-		lnPos = newLine(lnPos);
-		lnPos = newLine(lnPos);
-		pageArr[0].placeText(leftMargin, lnPos, "Dear Sir/Madam", "H1", 10, "L", 0);
-		lnPos = newLine(lnPos);
-		lnPos = newLine(lnPos);
-		pageArr[0].placeText(leftMargin, lnPos, "CLIENT: WILFRED FANI ZULU", "H1", 10, "L", 0);
-		lnPos = newLine(lnPos);
-		pageArr[0].placeText(leftMargin, lnPos, "ACCOUNT NUMBER: ML0000424143", "H1", 10, "L", 0);
-		lnPos = newLine(lnPos);
-		pageArr[0].placeText(leftMargin, lnPos, "PROPERTY DESCRIPTION: 113 PINEHAVEN ESTATES", "H1", 10, "L", 0);
-		lnPos = newLine(lnPos);
-		lnPos = newLine(lnPos);
-		pageArr[0].placeText(leftMargin, lnPos, "Building insurance cover over EFC loan - ML XXXXXXXXXXX", "H1", 10, "L", 0);
-		lnPos = newLine(lnPos);
-		lnPos = newLine(lnPos);
-		pageArr[0].placeText(leftMargin, lnPos, "According to our records you reside in a sectional title residence and therefore your building", "H1", 10, "L", 0);
-		lnPos = newLine(lnPos);
-		pageArr[0].placeText(leftMargin, lnPos, "insurance is managed by the Body Corporate.", "H1", 10, "L", 0);
-		lnPos = newLine(lnPos);
-		lnPos = newLine(lnPos);
-		pageArr[0].placeText(leftMargin, lnPos, "To safeguard our security we require a letter from the Body Corporate stating that policy is", "H1", 10, "L", 0);
-		lnPos = newLine(lnPos);
-		pageArr[0].placeText(leftMargin, lnPos, "active, the sum insured and that the interest of Eskom Finance Company SOC Ltd is noted", "H1", 10, "L", 0);
-		lnPos = newLine(lnPos);
-		pageArr[0].placeText(leftMargin, lnPos, "with the above loan reference number.", "H1", 10, "L", 0);
-		lnPos = newLine(lnPos);
-		lnPos = newLine(lnPos);
-		pageArr[0].placeText(leftMargin, lnPos, "The confirmation letter must reach EFC within 14 working days from date of this letter.", "H1", 10, "L", 0);
-		lnPos = newLine(lnPos);
-		lnPos = newLine(lnPos);
-		pageArr[0].placeText(leftMargin, lnPos, "The details can be e mailed to the following address EFC_FST@eskom.co.za.", "H1", 10, "L", 0);
-		lnPos = newLine(lnPos);
-		lnPos = newLine(lnPos);
-		pageArr[0].placeText(leftMargin, lnPos, "Should you require any additional information please send an email to", "H1", 10, "L", 0);
-		lnPos = newLine(lnPos);
-		pageArr[0].placeText(leftMargin, lnPos, "EFCAdmin@eskom.co.za clearly stating your employee or bond account number.", "H1", 10, "L", 0);
-		lnPos = newLine(lnPos);
-		lnPos = newLine(lnPos);
-		lnPos = newLine(lnPos);
-		pageArr[0].placeText(leftMargin, lnPos, "Yours Faithfully", "H1", 10, "L", 0);
-		lnPos = newLine(lnPos);
-		lnPos = newLine(lnPos);
-		lnPos = newLine(lnPos);
-		lnPos = newLine(lnPos);
-		lnPos = newLine(lnPos);
-		pageArr[0].placeText(leftMargin, lnPos, "EFC Litigation Department", "H1", 10, "L", 0);
+		pageArr[0].streamText = Pg1; // Add the letterhead
+		placeSectionalTitleText(pageArr[0]);
 		
 		try {
 			myPdf.saveAs("C:\\Temp\\TestMe.PDF");
@@ -107,6 +43,75 @@ public class App
 		}
 
         System.out.println( "Built the PDF!" );
+
+    }
+    
+    private static void placeSectionalTitleText(PdfPage targetPage) {
+    	int lnPos = 733; 
+    	int leftMargin = 86; 
+    	int tabPos = 400; 
+		//pageArr[0].placeText(leftMargin, lnPos, "CERTIFIED MAIL", "H1", 10, "L", 0);
+		lnPos = 703;
+		targetPage.placeText(leftMargin, lnPos, "WF Zulu", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		targetPage.placeText(leftMargin, lnPos, "P O Box 22", "H1", 10, "L", 0);
+		targetPage.placeText(tabPos, lnPos, "03 September 2012", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		targetPage.placeText(leftMargin, lnPos, "Dube", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		targetPage.placeText(leftMargin, lnPos, "SOWETO", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		targetPage.placeText(leftMargin, lnPos, "1800", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		targetPage.placeText(leftMargin, lnPos, "Dear Sir/Madam", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		targetPage.placeText(leftMargin, lnPos, "CLIENT: WILFRED FANI ZULU", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		targetPage.placeText(leftMargin, lnPos, "ACCOUNT NUMBER: ML0000424143", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		targetPage.placeText(leftMargin, lnPos, "PROPERTY DESCRIPTION: 113 PINEHAVEN ESTATES", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		targetPage.placeText(leftMargin, lnPos, "Building insurance cover over EFC loan - ML XXXXXXXXXXX", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		targetPage.placeText(leftMargin, lnPos, "According to our records you reside in a sectional title residence and therefore your building", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		targetPage.placeText(leftMargin, lnPos, "insurance is managed by the Body Corporate.", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		targetPage.placeText(leftMargin, lnPos, "To safeguard our security we require a letter from the Body Corporate stating that policy is", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		targetPage.placeText(leftMargin, lnPos, "active, the sum insured and that the interest of Eskom Finance Company SOC Ltd is noted", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		targetPage.placeText(leftMargin, lnPos, "with the above loan reference number.", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		targetPage.placeText(leftMargin, lnPos, "The confirmation letter must reach EFC within 14 working days from date of this letter.", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		targetPage.placeText(leftMargin, lnPos, "The details can be e mailed to the following address EFC_FST@eskom.co.za.", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		targetPage.placeText(leftMargin, lnPos, "Should you require any additional information please send an email to", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		targetPage.placeText(leftMargin, lnPos, "EFCAdmin@eskom.co.za clearly stating your employee or bond account number.", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		targetPage.placeText(leftMargin, lnPos, "Yours Faithfully", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		targetPage.placeText(leftMargin, lnPos, "EFC Litigation Department", "H1", 10, "L", 0);
     }
     
 	private static String readAllBytesJava7(String filePath) {
