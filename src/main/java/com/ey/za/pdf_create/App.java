@@ -9,7 +9,8 @@ public class App
     public static void main( String[] args )
     {
     	//createFstLetter("SectionalTitle");
-    	createFstLetter("OutsideInsurance");
+       	createFstLetter("OutsideInsurance");
+       	createFstLetter("OutsideInsurance");
     }
     
     private static void createFstLetter(String letterType) {
@@ -90,7 +91,6 @@ public class App
 		targetPage.placeText(leftMargin, lnPos, "Building insurance cover over EFC loan - ML XXXXXXXXXXX", "H1", 10, "L", 0);
 		lnPos = newLine(lnPos);
 		lnPos = newLine(lnPos);
-		System.out.println("lnPos="+lnPos);
     }
 
     private static void placeSectionalTitleBody(PdfPage targetPage) {
