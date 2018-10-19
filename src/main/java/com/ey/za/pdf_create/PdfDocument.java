@@ -16,7 +16,6 @@ public class PdfDocument {
 	String SPLIT = "\n";// "\r\n" or "\n";
 	String ISOLATE = "\r\n"; // Can use "\n" to make it easier to distinguish objects in the the stream file.
 	boolean ADD_COMMENTS = false;
-
 	ArrayList<PdfObject> objects = new ArrayList<>();
 	// int pageTreeID = 0;
 	// int pages[]={};
@@ -35,12 +34,34 @@ public class PdfDocument {
 	int doctitleID = 0;
 	boolean isPageStreamsDeflated = false;
 
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		System.out.println("PdfDocument - main()");
 	}
 
 	PdfDocument() {
+		objects = new ArrayList<>();
+		// int pageTreeID = 0;
+		// int pages[]={};
+		resources = new ArrayList<>();
+		resourceFonts = new ArrayList<>();
+		resourceFontNames = new ArrayList<>();
+		resourceImages = new ArrayList<>();
+		resourceImageNames = new ArrayList<>();
+		pageIds = new ArrayList<>();
+		pages = new ArrayList<>();
+		numOfObjects = 0;
+		System.out.println("Fix this PdfObject.numOfPdfObjects - maybe use numOfObjects propery of PdfDocument");
+		PdfObject.numOfPdfObjects=0;
+		rootID = 0; // Id of "catalog" object
+		pagetreeID = 0; // Id of "pagetree" object
+		resourceID = 0; // Id of "resource" object - for simplicity a single resource object is used for
+							// the whole document
+		doctitleID = 0;
+		isPageStreamsDeflated = false;
+
+		//-------------------------------------------above is new
 		int newObjectID = 0;
 		// System.out.println("PdfDocument Default Constructor.");
 		addObject("empty"); // Add empty object to ArrayList<PdfObject> objects to allow the position of
@@ -84,11 +105,18 @@ public class PdfDocument {
 
 	public void addFont(String fontName) {
 		int newObjectID = addObject("font");
+		System.out.println("addFont(" + fontName + ") : resourceFontNames.size()=" + resourceFontNames.size());
+		System.out.println("addFont(" + fontName + ") : newObjectID=" + newObjectID);
 		resources.add(newObjectID);
+		System.out.println("Works 1");
 		resourceFonts.add(newObjectID);
+		System.out.println("Works 2");
 		resourceFontNames.add(fontName);
-		PdfFont newFont = (PdfFont) objects.get(newObjectID);
+		System.out.println("Works 3");
+		PdfFont newFont = (PdfFont) objects.get(newObjectID); //TODO: This line fails - need to be fixed!
+		System.out.println("Works 4");
 		newFont.logicalName = fontName;
+		System.out.println("Works 5");
 	}
 
 	public int addObject(String objectType) {
@@ -132,8 +160,7 @@ public class PdfDocument {
 		newObject.id = numOfObjects;
 		newObject.type = objectType;
 		newObject.parentDocument = this;
-		// System.out.println("PdfDocument - addObject("+objectType+") - ID:
-		// "+newObject.id);
+		System.out.println("PdfDocument - addObject("+objectType+") - ID:"+newObject.id);
 		objects.add(newObject);
 
 		return newObject.id;
@@ -165,6 +192,7 @@ public class PdfDocument {
 			}
 
 			String xrefCorrection = SPLIT;
+			System.out.println("Fix this PdfObject.numOfPdfObjects - maybe use numOfObjects propery of PdfDocument");
 			String xref = xrefCorrection + "xref" + SPLIT + "0 " + Integer.toString(PdfObject.numOfPdfObjects)// ---------------
 					+ SPLIT + "0000000000 65535 f" + STREAM_SPLIT;
 
@@ -194,7 +222,6 @@ public class PdfDocument {
 			trailer += ">>";
 			trailer += SPLIT + "startxref" + SPLIT + Integer.toString(iFilePosition) + SPLIT + "%%EOF" + SPLIT;
 
-			System.out.println(xref + trailer);
 			text = text + xref + trailer;
 			fos.write(xref.getBytes(StandardCharsets.UTF_8));
 			fos.write(trailer.getBytes(StandardCharsets.UTF_8));
