@@ -85,7 +85,7 @@ public class PdfXObject extends PdfObject {
 		imageHeight = bufferedImage.getHeight();
 		imageType = bufferedImage.getType();
 		ColorModel colorModel = bufferedImage.getColorModel();
-		System.out.println("image.getType() = " + bufferedImage.getType());
+		//System.out.println("image.getType() = " + bufferedImage.getType());
 		switch (bufferedImage.getType()) {
 		case 5:
 			System.out.println("TYPE_3BYTE_BGR");
@@ -167,7 +167,7 @@ public class PdfXObject extends PdfObject {
 			System.out.println("IMAGE TYPE NOT DEFINED!");
 			break;
 		}
-
+        /*
 		System.out.println(bufferedImage.getColorModel());
 		System.out.println("colorModel.getPixelSize() = " + colorModel.getPixelSize());
 		System.out.println("colorModel.getNumComponents() = " + colorModel.getNumComponents());
@@ -176,6 +176,7 @@ public class PdfXObject extends PdfObject {
 		System.out.println("colorModel.getTransparency() = " + colorModel.getTransparency());
 		System.out.println("colorModel.hasAlpha() = " + colorModel.hasAlpha());
 		System.out.println("colorModel.isAlphaPremultiplied() = " + colorModel.isAlphaPremultiplied());
+		*/
 
 		System.out.println("imageWidth = " + imageWidth);
 		System.out.println("imageHeight = " + imageHeight);
