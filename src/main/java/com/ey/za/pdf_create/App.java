@@ -8,7 +8,8 @@ public class App
 {
     public static void main( String[] args )
     {
-    	createFstLetter("SectionalTitle");
+    	//createFstLetter("SectionalTitle");
+    	createFstLetter("OutsideInsurance");
     }
     
     private static void createFstLetter(String letterType) {
@@ -36,11 +37,12 @@ public class App
 		placeGenericHeading(pageArr[0]);
 		switch (letterType) {
         case "SectionalTitle":  placeSectionalTitleBody(pageArr[0]);
-                 break;
+        	break;
+        case "OutsideInsurance":  placeOutsideInsuranceBody(pageArr[0]);
+        	break;
         default: System.out.println( "Invalid letterType specified!" );
-                 break;
-    }
-		
+        	break;
+		}
 		
 		try {
 			myPdf.saveAs("C:\\Temp\\" + letterType + ".PDF");
@@ -115,6 +117,47 @@ public class App
 		targetPage.placeText(leftMargin, lnPos, "Should you require any additional information please send an email to", "H1", 10, "L", 0);
 		lnPos = newLine(lnPos);
 		targetPage.placeText(leftMargin, lnPos, "EFCAdmin@eskom.co.za clearly stating your employee or bond account number.", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		targetPage.placeText(leftMargin, lnPos, "Yours Faithfully", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		targetPage.placeText(leftMargin, lnPos, "EFC Litigation Department", "H1", 10, "L", 0);
+    }
+    
+
+    private static void placeOutsideInsuranceBody(PdfPage targetPage) {
+    	int lnPos = 487; 
+    	int leftMargin = 86; 
+		targetPage.placeText(leftMargin, lnPos, "Eskom Finance Company has granted you permission to have your building insurance", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		targetPage.placeText(leftMargin, lnPos, "covered by an insurance company of your choice.", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		targetPage.placeText(leftMargin, lnPos, "To safeguard our security we require your latest policy schedule where the Eskom Finance", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		targetPage.placeText(leftMargin, lnPos, "Company's interest has been noted or a letter from the insurance company stating that", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		targetPage.placeText(leftMargin, lnPos, "policy is active, the sum insured and that the interest of Eskom Finance Company SOC Ltd", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		targetPage.placeText(leftMargin, lnPos, "is noted with the above loan reference number.", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		targetPage.placeText(leftMargin, lnPos, "The policy schedule or letter must reach EFC within 14 working days from date of this letter.", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		targetPage.placeText(leftMargin, lnPos, "The details can be e mailed to the following address: efc_fst@eskom.co.za.", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		targetPage.placeText(leftMargin, lnPos, "Failure to do so Eskom Finance Company will be obliged re-activate your policy through", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		targetPage.placeText(leftMargin, lnPos, "Hollard to ensure that your property is insured to protect both your interest and Eskom", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		targetPage.placeText(leftMargin, lnPos, "Finance Company, being the bond holder.", "H1", 10, "L", 0);
 		lnPos = newLine(lnPos);
 		lnPos = newLine(lnPos);
 		lnPos = newLine(lnPos);
