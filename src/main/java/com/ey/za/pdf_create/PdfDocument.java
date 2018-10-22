@@ -113,11 +113,62 @@ public class PdfDocument {
 		System.out.println("Works 2");
 		resourceFontNames.add(fontName);
 		System.out.println("Works 3");
-		PdfFont newFont = (PdfFont) objects.get(newObjectID); //TODO: This line fails - need to be fixed!
+		PdfFont newFont = (PdfFont) objects.get(newObjectID); 
 		System.out.println("Works 4");
-		newFont.logicalName = fontName;
+		newFont.name = fontName;
 		newFont.baseFont = baseFont;
 		System.out.println("Works 5");
+		switch(baseFont) {
+			case "ArialMT": 
+					newFont.fontDescriptorID = addFontDescriptor(baseFont);
+					break;
+			case "Arial-BoldMT": 
+					newFont.fontDescriptorID = addFontDescriptor(baseFont);
+					break;
+		}
+		
+	}
+
+	public int addFontDescriptor(String baseFont) {
+		int newObjectID = addObject("fontdescriptor");
+
+		PdfFontDescriptor newFontDescriptor = (PdfFontDescriptor) objects.get(newObjectID);
+
+		switch(baseFont) {
+		case "ArialMT": 
+			newFontDescriptor.fontName = "Arial-BoldMT";
+			newFontDescriptor.flags = 32;
+			newFontDescriptor.italicAngle = 0;
+			newFontDescriptor.ascent = 905;
+			newFontDescriptor.descent = -210;
+			newFontDescriptor.capHeight = 728;
+			newFontDescriptor.avgWidth = 441;
+			newFontDescriptor.maxWidth = 2665;
+			newFontDescriptor.fontWeight = 400;
+			newFontDescriptor.xHeight = 250;
+			newFontDescriptor.leading = 33;
+			newFontDescriptor.stemV = 44;
+			newFontDescriptor.fontBBox = "[ -665 -210 2000 728]";
+			break;
+		case "Arial-BoldMT": 
+			newFontDescriptor.fontName = "Arial-BoldMT";
+			newFontDescriptor.flags = 32;
+			newFontDescriptor.italicAngle = 0;
+			newFontDescriptor.ascent = 905;
+			newFontDescriptor.descent = -210;
+			newFontDescriptor.capHeight = 728;
+			newFontDescriptor.avgWidth = 479;
+			newFontDescriptor.maxWidth = 2628;
+			newFontDescriptor.fontWeight = 700;
+			newFontDescriptor.xHeight = 250;
+			newFontDescriptor.leading = 33;
+			newFontDescriptor.stemV = 47;
+			newFontDescriptor.fontBBox = "[ -628 -210 2000 728]";
+			break;
+		}
+
+		newFontDescriptor.fontName = baseFont;
+		return newObjectID;
 	}
 
 	public int addObject(String objectType) {
@@ -137,6 +188,9 @@ public class PdfDocument {
 			break;
 		case "font":
 			newObject = new PdfFont();
+			break;
+		case "fontdescriptor":
+			newObject = new PdfFontDescriptor();
 			break;
 		case "xobject":
 			newObject = new PdfXObject();
