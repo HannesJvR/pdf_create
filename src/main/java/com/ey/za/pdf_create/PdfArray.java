@@ -7,6 +7,6 @@ public class PdfArray extends PdfObject{
 		if (parentDocument.ADD_COMMENTS) {
 			sComment = "  % Array object";
 		}
-		text = Integer.toString(id) + " 0 obj " + arrayContents + sComment + parentDocument.ISOLATE;
+		text = Integer.toString(id) + " 0 obj " + arrayContents + parentDocument.SPLIT + "endobj" + sComment + parentDocument.SPLIT + parentDocument.ISOLATE;
 	}
 }
