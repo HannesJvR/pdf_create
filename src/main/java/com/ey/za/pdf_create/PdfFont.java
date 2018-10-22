@@ -133,8 +133,8 @@ endobj
 		}
 		
 		//TODO: if (fontDescriptorID > 0) {Add redirect to the FontDescriptor: /FontDescriptor 8 0 R}
-		if (fontDescriptorID == 0) { //This is the new way using TrueType fonts
-			/*text = Integer.toString(id) + " 0 obj<</Type/Font" + sComment + parentDocument.SPLIT + 
+		if (fontDescriptorID > 0) { //This is the new way using TrueType fonts
+			text = Integer.toString(id) + " 0 obj<</Type/Font" + sComment + parentDocument.SPLIT + 
 					"/Subtype/" + subType + sComment + parentDocument.SPLIT + 
 					"/Name/" + name + sComment + parentDocument.SPLIT + 
 					"/BaseFont/" + baseFont + sComment + parentDocument.SPLIT + 
@@ -143,11 +143,6 @@ endobj
 					"/FirstChar " + firstChar + sComment + parentDocument.SPLIT + 
 					"/LastChar " + lastChar + sComment + parentDocument.SPLIT + 
 					"/Widths " + redirect(widthsID) + sComment + parentDocument.SPLIT + 
-					">>" + sComment + parentDocument.SPLIT + "endobj" + sComment + parentDocument.SPLIT + parentDocument.ISOLATE;*/
-			text = Integer.toString(id) + " 0 obj<</Type/Font" + sComment + parentDocument.SPLIT + 
-					"/Subtype/" + subType + sComment + parentDocument.SPLIT + 
-					"/BaseFont/" + baseFont + sComment + parentDocument.SPLIT + 
-					"/FontDescriptor " + redirect(fontDescriptorID) + sComment + parentDocument.SPLIT + 
 					">>" + sComment + parentDocument.SPLIT + "endobj" + sComment + parentDocument.SPLIT + parentDocument.ISOLATE;
 		}
 	}
