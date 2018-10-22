@@ -25,7 +25,7 @@ public class PdfResource extends PdfObject {
 				// System.out.println("forObject = "+forObject);
 				// counter++;
 				tempFont = (PdfFont) parentDocument.objects.get(forObject);
-				leadText = leadText + "/" + tempFont.logicalName + " " + redirect(forObject);
+				leadText = leadText + "/" + tempFont.name + " " + redirect(forObject);
 			}
 			text = text + leadText + trailText;
 		}
