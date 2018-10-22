@@ -118,13 +118,20 @@ public class PdfDocument {
 		newFont.name = fontName;
 		newFont.baseFont = baseFont;
 		System.out.println("Works 5");
+		
+		String widthsContents = "";
+		
 		switch(baseFont) {
 			case "ArialMT": 
-					newFont.fontDescriptorID = addFontDescriptor(baseFont);
-					break;
+			    widthsContents = "[ 278 0 0 0 0 0 0 0 0 0 0 0 0 0 278 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 611 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 556 0 0 556 0 0 500 0 0 0 556 0 0 333 500 278 0 0 722]";
+				newFont.fontDescriptorID = addFontDescriptor(baseFont);
+				newFont.widthsID = addArray(widthsContents);
+				break;
 			case "Arial-BoldMT": 
-					newFont.fontDescriptorID = addFontDescriptor(baseFont);
-					break;
+			    widthsContents = "[ 278 0 0 0 0 0 0 0 0 0 0 0 0 0 278 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 722 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 611 0 611 556 0 0 0 278 0 0 278 0 611 611]";
+				newFont.fontDescriptorID = addFontDescriptor(baseFont);
+				newFont.widthsID = addArray(widthsContents);
+				break;
 		}
 		
 	}
@@ -134,9 +141,10 @@ public class PdfDocument {
 
 		PdfFontDescriptor newFontDescriptor = (PdfFontDescriptor) objects.get(newObjectID);
 
+		newFontDescriptor.fontName = baseFont;
+		
 		switch(baseFont) {
 		case "ArialMT": 
-			newFontDescriptor.fontName = "Arial-BoldMT";
 			newFontDescriptor.flags = 32;
 			newFontDescriptor.italicAngle = 0;
 			newFontDescriptor.ascent = 905;
@@ -151,7 +159,6 @@ public class PdfDocument {
 			newFontDescriptor.fontBBox = "[ -665 -210 2000 728]";
 			break;
 		case "Arial-BoldMT": 
-			newFontDescriptor.fontName = "Arial-BoldMT";
 			newFontDescriptor.flags = 32;
 			newFontDescriptor.italicAngle = 0;
 			newFontDescriptor.ascent = 905;
@@ -167,7 +174,16 @@ public class PdfDocument {
 			break;
 		}
 
-		newFontDescriptor.fontName = baseFont;
+		return newObjectID;
+	}
+
+	public int addArray(String arrayContents) {
+		int newObjectID = addObject("array");
+
+		PdfArray newArray = (PdfArray) objects.get(newObjectID);
+
+		newArray.arrayContents = arrayContents;
+		
 		return newObjectID;
 	}
 
@@ -179,6 +195,9 @@ public class PdfDocument {
 		case "empty":
 			numOfObjects--;
 			newObject = new PdfObject();
+			break;
+		case "array":
+			newObject = new PdfArray();
 			break;
 		case "info":
 			newObject = new PdfInfo();
