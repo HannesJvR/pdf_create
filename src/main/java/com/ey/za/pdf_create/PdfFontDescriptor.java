@@ -1,5 +1,6 @@
 package com.ey.za.pdf_create;
-/*
+/* 
+Example of FontDescriptor object
 8 0 obj
 <</Type/FontDescriptor
 /FontName/Arial-BoldMT
@@ -19,23 +20,23 @@ endobj
 */
 public class PdfFontDescriptor extends PdfObject  {
 
-	String fontName = "Arial-BoldMT";
-	int flags = 32;
-	int italicAngle = 0;
-	int ascent = 905;
-	int descent = -210;
-	int capHeight = 728;
+	String fontName = "Arial-BoldMT"; //Required
+	int flags = 32;	//Required
+	int italicAngle = 0; //Required
+	int ascent = 905; //Required
+	int descent = -210; //Required
+	int capHeight = 728; //Required
 	int avgWidth = 479;
 	int maxWidth = 2628;
 	int fontWeight = 700;
 	int xHeight = 250;
 	int leading = 33;
-	int stemV = 47;
-	String fontBBox = "[ -628 -210 2000 728]";
+	int stemV = 47; //Required
+	String fontBBox = "[ -628 -210 2000 728]"; //Required
 
 	public void renderPdfCharacters() {
 		if (parentDocument.ADD_COMMENTS) {
-			sComment = "  % Font object";
+			sComment = "  % FontDescriptor object";
 		}
 		text = Integer.toString(id) + " 0 obj<</Type/FontDescriptor" + sComment + parentDocument.SPLIT + 
 				"/FontName/" + fontName	+ sComment + parentDocument.SPLIT + 
