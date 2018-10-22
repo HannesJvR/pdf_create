@@ -19,7 +19,8 @@ public class App
 
 		myPdf.isPageStreamsDeflated = isPageStreamsDeflated;
 
-		myPdf.addFont("H1");
+		myPdf.addFont("H1","ArialMT");
+		myPdf.addFont("H2","Arial-BoldMT");
 		try {
 			myPdf.addImage("ImgJPEG1", "C:\\1Hannes\\workspacePhoton\\pdf_create\\src\\main\\resources\\EFCLogo-30.jpg");
 		} catch (IOException e1) {
@@ -88,7 +89,7 @@ public class App
 		targetPage.placeText(leftMargin, lnPos, "PROPERTY DESCRIPTION: 113 PINEHAVEN ESTATES", "H1", 10, "L", 0);
 		lnPos = newLine(lnPos);
 		lnPos = newLine(lnPos);
-		targetPage.placeText(leftMargin, lnPos, "Building insurance cover over EFC loan - ML XXXXXXXXXXX", "H1", 10, "L", 0);
+		targetPage.placeText(leftMargin, lnPos, "Building insurance cover over EFC loan - ML XXXXXXXXXXX", "H2", 10, "L", 0);
 		lnPos = newLine(lnPos);
 		lnPos = newLine(lnPos);
     }

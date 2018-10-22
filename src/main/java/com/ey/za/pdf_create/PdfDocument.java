@@ -103,7 +103,7 @@ public class PdfDocument {
 		newImage.checkImageProperties();
 	}
 
-	public void addFont(String fontName) {
+	public void addFont(String fontName,String baseFont) {
 		int newObjectID = addObject("font");
 		System.out.println("addFont(" + fontName + ") : resourceFontNames.size()=" + resourceFontNames.size());
 		System.out.println("addFont(" + fontName + ") : newObjectID=" + newObjectID);
@@ -116,6 +116,7 @@ public class PdfDocument {
 		PdfFont newFont = (PdfFont) objects.get(newObjectID); //TODO: This line fails - need to be fixed!
 		System.out.println("Works 4");
 		newFont.logicalName = fontName;
+		newFont.baseFont = baseFont;
 		System.out.println("Works 5");
 	}
 
