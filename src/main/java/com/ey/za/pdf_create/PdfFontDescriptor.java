@@ -37,19 +37,19 @@ public class PdfFontDescriptor extends PdfObject  {
 		if (parentDocument.ADD_COMMENTS) {
 			sComment = "  % Font object";
 		}
-		text = Integer.toString(id) + " 0 obj<</Type/Font" + sComment + parentDocument.SPLIT + 
+		text = Integer.toString(id) + " 0 obj<</Type/FontDescriptor" + sComment + parentDocument.SPLIT + 
 				"/FontName/" + fontName	+ sComment + parentDocument.SPLIT + 
-				"/Flags/" + flags	+ sComment + parentDocument.SPLIT + 
-				"/ItalicAngle/" + italicAngle	+ sComment + parentDocument.SPLIT + 
-				"/Ascent/" + ascent	+ sComment + parentDocument.SPLIT + 
-				"/Descent/" + descent	+ sComment + parentDocument.SPLIT + 
-				"/CapHeight/" + capHeight	+ sComment + parentDocument.SPLIT + 
-				"/AvgWidth/" + avgWidth	+ sComment + parentDocument.SPLIT + 
-				"/MaxWidth/" + maxWidth	+ sComment + parentDocument.SPLIT + 
-				"/FontWeight/" + fontWeight	+ sComment + parentDocument.SPLIT + 
-				"/XHeight/" + xHeight	+ sComment + parentDocument.SPLIT + 
-				"/Leading/" + leading	+ sComment + parentDocument.SPLIT + 
-				"/StemV/" + stemV	+ sComment + parentDocument.SPLIT + 
+				"/Flags " + flags	+ sComment + parentDocument.SPLIT + 
+				"/ItalicAngle " + italicAngle	+ sComment + parentDocument.SPLIT + 
+				"/Ascent " + ascent	+ sComment + parentDocument.SPLIT + 
+				"/Descent " + descent	+ sComment + parentDocument.SPLIT + 
+				"/CapHeight " + capHeight	+ sComment + parentDocument.SPLIT + 
+				"/AvgWidth " + avgWidth	+ sComment + parentDocument.SPLIT + 
+				"/MaxWidth " + maxWidth	+ sComment + parentDocument.SPLIT + 
+				"/FontWeight " + fontWeight	+ sComment + parentDocument.SPLIT + 
+				"/XHeight " + xHeight	+ sComment + parentDocument.SPLIT + 
+				"/Leading " + leading	+ sComment + parentDocument.SPLIT + 
+				"/StemV " + stemV	+ sComment + parentDocument.SPLIT + 
 				"/FontBBox" + fontBBox + ">>" + sComment + parentDocument.SPLIT + "endobj"
 				+ sComment + parentDocument.SPLIT + parentDocument.ISOLATE;
 	}
