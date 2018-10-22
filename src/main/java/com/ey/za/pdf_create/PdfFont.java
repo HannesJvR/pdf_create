@@ -81,6 +81,7 @@ endobj
 	String baseFont = "Arial";
 	String subType = "Type1";
 	String logicalName = "";
+	int fontDescriptorID = 0; // Id of "pagetree" object
 
 	public void renderPdfCharacters() {
 		if (parentDocument.ADD_COMMENTS) {
