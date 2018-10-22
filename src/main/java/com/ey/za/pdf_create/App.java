@@ -19,8 +19,8 @@ public class App
 
 		myPdf.isPageStreamsDeflated = isPageStreamsDeflated;
 
-		myPdf.addFont("H1","ArialMT");
-		myPdf.addFont("H2","Arial-BoldMT");
+		myPdf.addFont("H1","Helvetica");
+		myPdf.addFont("H2","Helvetica-Bold");
 		try {
 			myPdf.addImage("ImgJPEG1", "C:\\1Hannes\\workspacePhoton\\pdf_create\\src\\main\\resources\\EFCLogo-30.jpg");
 		} catch (IOException e1) {
