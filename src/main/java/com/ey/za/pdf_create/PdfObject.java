@@ -84,8 +84,7 @@ public class PdfObject {
 	}
 
 	public void renderPdfCharacters() {
-		System.out.println("Default version of renderPdfCharacters() used for object " + Integer.toString(id)
-				+ " (type: " + type + ")");
+		//System.out.println("Default version of renderPdfCharacters() used for object " + Integer.toString(id) + " (type: " + type + ")");
 	}
 
 }

@@ -52,7 +52,7 @@ public class PdfDocument {
 		pageIds = new ArrayList<>();
 		pages = new ArrayList<>();
 		numOfObjects = 0;
-		System.out.println("Fix this PdfObject.numOfPdfObjects - maybe use numOfObjects propery of PdfDocument");
+		//System.out.printlnix this PdfObject.numOfPdfObjects - maybe use numOfObjects propery of PdfDocument");
 		PdfObject.numOfPdfObjects=0;
 		rootID = 0; // Id of "catalog" object
 		pagetreeID = 0; // Id of "pagetree" object
@@ -105,19 +105,19 @@ public class PdfDocument {
 
 	public void addFont(String fontName,String baseFont) {
 		int newObjectID = addObject("font");
-		System.out.println("addFont(" + fontName + ") : resourceFontNames.size()=" + resourceFontNames.size());
-		System.out.println("addFont(" + fontName + ") : newObjectID=" + newObjectID);
+		//System.out.println("addFont(" + fontName + ") : resourceFontNames.size()=" + resourceFontNames.size());
+		//System.out.println("addFont(" + fontName + ") : newObjectID=" + newObjectID);
 		resources.add(newObjectID);
-		System.out.println("Works 1");
+		//System.out.println("Works 1");
 		resourceFonts.add(newObjectID);
-		System.out.println("Works 2");
+		//System.out.println("Works 2");
 		resourceFontNames.add(fontName);
-		System.out.println("Works 3");
+		//System.out.println("Works 3");
 		PdfFont newFont = (PdfFont) objects.get(newObjectID); 
-		System.out.println("Works 4");
+		//System.out.println("Works 4");
 		newFont.name = fontName;
 		newFont.baseFont = baseFont;
-		System.out.println("Works 5");
+		//System.out.println("Works 5");
 		
 		String widthsContents = "";
 		
@@ -234,7 +234,7 @@ public class PdfDocument {
 		newObject.id = numOfObjects;
 		newObject.type = objectType;
 		newObject.parentDocument = this;
-		System.out.println("PdfDocument - addObject("+objectType+") - ID:"+newObject.id);
+		//System.out.println("PdfDocument - addObject("+objectType+") - ID:"+newObject.id);
 		objects.add(newObject);
 
 		return newObject.id;
@@ -244,11 +244,11 @@ public class PdfDocument {
 		String sComment = "";
 		String text = "";
 
-		System.out.println("");
-		System.out.println("------------------------------------------------------------------------------");
+		//System.out.println("");
+		//System.out.println("------------------------------------------------------------------------------");
 		System.out.println("Saving to file : " + filePath);
 		System.out.println("------------------------------------------------------------------------------");
-		try (FileOutputStream fos = new FileOutputStream(filePath + "BYT.PDF")) {
+		try (FileOutputStream fos = new FileOutputStream(filePath)) {
 
 			if (ADD_COMMENTS) {
 				sComment = "  % File header";
@@ -266,7 +266,7 @@ public class PdfDocument {
 			}
 
 			String xrefCorrection = SPLIT;
-			System.out.println("Fix this PdfObject.numOfPdfObjects - maybe use numOfObjects propery of PdfDocument");
+			//System.out.printlnix this PdfObject.numOfPdfObjects - maybe use numOfObjects propery of PdfDocument");
 			String xref = xrefCorrection + "xref" + SPLIT + "0 " + Integer.toString(PdfObject.numOfPdfObjects)// ---------------
 					+ SPLIT + "0000000000 65535 f" + STREAM_SPLIT;
 
@@ -301,8 +301,8 @@ public class PdfDocument {
 			fos.write(trailer.getBytes(StandardCharsets.UTF_8));
 			// System.out.println(text);
 		}
-		try (FileOutputStream fos2 = new FileOutputStream(filePath + ".TXT")) {
-			fos2.write(text.getBytes(StandardCharsets.UTF_8));
-		}
+		//try (FileOutputStream fos2 = new FileOutputStream(filePath + ".TXT")) {
+		//	fos2.write(text.getBytes(StandardCharsets.UTF_8));
+		//}
 	}
 }

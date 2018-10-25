@@ -123,7 +123,7 @@ endobj
 			sComment = "  % Font object";
 		}
 
-		System.out.println("/BaseFont/" + baseFont + "/Subtype/" + subType + " > fontDescriptorID = " + fontDescriptorID);
+		//System.out.println("/BaseFont/" + baseFont + "/Subtype/" + subType + " > fontDescriptorID = " + fontDescriptorID);
 		
 		if (fontDescriptorID == 0) { //This is the old way using Type1 fonts
 			text = Integer.toString(id) + " 0 obj<</Type/Font" + sComment + parentDocument.SPLIT + 
