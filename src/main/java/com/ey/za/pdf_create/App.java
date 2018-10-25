@@ -3,24 +3,162 @@ package com.ey.za.pdf_create;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 public class App 
 {
+	static String postfix = "R7";
+	static String startOfPreviousMonth = "01-Sep-2018"; //Format DD-MMM-YYYY
+	static String startOfThisMonth = "01-Oct-2018"; //Format DD-MMM-YYYY
+	static String letterDate = "25 October 2018";
+	static String targetFolder = "C:\\Temp\\FST\\";
     public static void main( String[] args )
     {
-    	//createFstLetter("SectionalTitle");
-       	createFstLetter("OutsideInsurance");
-       	createFstLetter("OutsideInsurance");
+		String connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=Staging;user=test;password=test";
+		FstLetter thisLetter = new FstLetter();
+
+    	String sql = new StringBuilder()
+    			.append("USE Phoenix; \n")
+    			.append("IF OBJECT_ID('tempdb..#TC_300_SUMMARY') IS NOT NULL \n")
+    			.append("DROP TABLE #TC_300_SUMMARY; \n")
+    			.append("SELECT acct_type, acct_no, SUM(amt) amt, SUM(pass_thru_amt) pass_thru_amt \n")
+    			.append("INTO #TC_300_SUMMARY \n")
+    			.append("FROM Phoenix.dbo.ln_history \n")
+    			.append("WHERE acct_type = 'ML' \n")
+    			.append("AND effective_dt >= '" + startOfPreviousMonth + "' \n")
+    			.append("AND effective_dt < '" + startOfThisMonth + "' \n")
+    			.append("AND tran_code = 300 \n")
+    			.append("GROUP BY acct_type, acct_no; \n")
+    			.append("SELECT \n")
+    			.append("    TT.acct_type, \n")
+    			.append("    TT.acct_no, \n")
+    			.append("    rm_acct.tin, \n")
+    			.append("    ln_acct.rim_no, \n")
+    			.append("    COALESCE(rm_acct.first_name,'') AS first_name, \n")
+    			.append("    COALESCE(rm_acct.last_name,'') AS last_name, \n")
+    			.append("    COALESCE(rm_acct.preferred_name,'') AS preferred_name, \n")
+    			.append("    COALESCE(rm_acct.id_value,'') AS id_value, \n")
+    			.append("    COALESCE(rm_acct.sex,'') AS sex, \n")
+    			.append("    COALESCE(rm_address.name_1,'') AS name_1, \n")
+    			.append("    COALESCE(rm_address.address_line_1,'') AS address_line_1, \n")
+    			.append("    COALESCE(rm_address.address_line_2,'') AS address_line_2, \n")
+    			.append("    COALESCE(rm_address.address_line_3,'') AS address_line_3, \n")
+    			.append("    COALESCE(rm_address.city,'') AS city, \n")
+    			.append("    COALESCE(rm_address.zip,'') AS zip, \n")
+    			.append("    COALESCE(rm_address.email_addr_1,'') AS email_addr_1, \n")
+    			.append("    COALESCE(rm_address.email_addr_2,'') AS email_addr_2, \n")
+    			//.append("    COALESCE(rm_address.addr_type_id,'') AS addr_type_id, \n")
+    			.append("    COALESCE(ad_rm_addr_type.addr_type,'') AS addr_type, \n")
+    			.append("    COALESCE(rm_fin_stmt.legal_desc,'') AS legal_desc, \n")
+    			.append("    COALESCE(ad_rm_stmt_cat.category,'') AS category, \n")
+    			.append("    COALESCE(ln_acct.class_code,'') AS class_code \n")
+    			.append("FROM \n")
+    			.append("    (SELECT \n")
+    			.append("        acct_type, acct_no,  \n")
+    			.append("        CASE pass_thru_amt \n")
+    			.append("            WHEN 0.000000 THEN 'N' \n")
+    			.append("            ELSE 'Y' \n")
+    			.append("        END pass_thru_amt \n")
+    			.append("    FROM #TC_300_SUMMARY) TT JOIN \n")
+    			.append("    Phoenix.dbo.ln_acct ON TT.acct_no = ln_acct.acct_no AND TT.acct_type = ln_acct.acct_type JOIN \n")
+    			.append("    Phoenix.dbo.rm_acct ON ln_acct.rim_no = rm_acct.rim_no JOIN \n")
+    			.append("    Phoenix.dbo.rm_address ON rm_acct.rim_no = rm_address.rim_no JOIN \n")
+    			.append("    Phoenix.dbo.ad_rm_addr_type ON rm_address.addr_type_id = ad_rm_addr_type.addr_type_id LEFT JOIN \n")
+    			.append("    Phoenix.dbo.ln_collateral ON TT.acct_no = ln_collateral.acct_no AND TT.acct_type \n= ln_collateral.acct_type LEFT JOIN \n")
+    			.append("    Phoenix.dbo.rm_fin_stmt ON ln_collateral.fin_stmt_item_id = rm_fin_stmt.fin_stmt_item_id LEFT JOIN \n")
+    			.append("    Phoenix.dbo.ad_rm_stmt_cat ON ad_rm_stmt_cat.CATEGORY_ID = rm_fin_stmt.category_id \n")
+    			.append("WHERE TT.pass_thru_amt = 'N' \n")
+    			.append("AND ad_rm_addr_type.addr_type = 'Primary' \n")
+    			.append("AND ln_acct.class_code <> 120 \n")
+    			//.append("AND ad_rm_stmt_cat.category = 'Sectional title' \n")//Sectional title//Dwelling Unit
+    			.append("ORDER BY \n")
+    			.append("    TT.acct_type, \n")
+    			.append("    TT.acct_no; ").toString();
+    	
+		try {
+			// Load SQL Server JDBC driver and establish connection.
+			System.out.print("Connecting to SQL Server ... ");
+			try (Connection connection = DriverManager.getConnection(connectionUrl)) {
+				System.out.println("Done.");
+
+				// READ demo
+				System.out.print("Press ENTER to retrieve data...");
+				System.in.read();
+				System.out.print("Reading data from table...");
+				try (Statement statement = connection.createStatement();
+						ResultSet resultSet = statement.executeQuery(sql)) {
+					while (resultSet.next()) {
+						thisLetter.acct_type = resultSet.getString("acct_type").trim();
+						thisLetter.acct_no = resultSet.getString("acct_no").trim();
+						thisLetter.tin = resultSet.getString("tin").trim();
+						thisLetter.rim_no = resultSet.getString("rim_no").trim();
+						thisLetter.first_name = resultSet.getString("first_name").trim();
+						thisLetter.last_name = resultSet.getString("last_name").trim();
+						thisLetter.preferred_name = resultSet.getString("preferred_name").trim();
+						thisLetter.id_value = resultSet.getString("id_value").trim();
+						thisLetter.sex = resultSet.getString("sex").trim();
+						thisLetter.name_1 = resultSet.getString("name_1").trim();
+						thisLetter.address_line_1 = resultSet.getString("address_line_1").trim();
+						thisLetter.address_line_2 = resultSet.getString("address_line_2").trim();
+						thisLetter.address_line_3 = resultSet.getString("address_line_3").trim();
+						thisLetter.city = resultSet.getString("city").trim();
+						thisLetter.zip = resultSet.getString("zip").trim();
+						thisLetter.email_addr_1 = resultSet.getString("email_addr_1").trim();
+						thisLetter.email_addr_2 = resultSet.getString("email_addr_2").trim();
+						//thisLetter.addr_type_id = resultSet.getString("addr_type_id").trim();
+						thisLetter.addr_type = resultSet.getString("addr_type").trim();
+						thisLetter.legal_desc = resultSet.getString("legal_desc").trim();
+						thisLetter.category = resultSet.getString("category").trim();
+						thisLetter.class_code = resultSet.getString("class_code").trim();
+
+						System.out.println(
+								thisLetter.category + "|" + 
+								thisLetter.class_code + "|" + 
+								thisLetter.acct_type+thisLetter.acct_no + "|" + 
+								thisLetter.tin + "|" + 
+								thisLetter.rim_no + "|" + 
+								thisLetter.first_name + "|" + 
+								thisLetter.last_name + "|" + 
+								thisLetter.preferred_name + "|" + 
+								thisLetter.id_value + "|" + 
+								thisLetter.sex + "|" + 
+								thisLetter.name_1 + "|" + 
+								thisLetter.address_line_1 + "|" + 
+								thisLetter.address_line_2 + "|" + 
+								thisLetter.address_line_3 + "|" + 
+								thisLetter.city + "|" + 
+								thisLetter.zip + "|" + 
+								thisLetter.email_addr_1 + "|" + 
+								thisLetter.email_addr_2 + "|" + 
+								//thisLetter.addr_type_id + "|" + 
+								thisLetter.addr_type + "|" + 
+								thisLetter.legal_desc + "|");
+						
+						createFstLetter(thisLetter);
+					}
+				}
+				connection.close();
+				System.out.println("All done.");
+			}
+		} catch (Exception e) {
+			System.out.println();
+			e.printStackTrace();
+		}
     }
     
-    private static void createFstLetter(String letterType) {
+    private static void createFstLetter(FstLetter letterData) {
 		boolean isPageStreamsDeflated = false;
 		PdfDocument myPdf = new PdfDocument();
+		String subFolder = letterData.acct_no.substring(letterData.acct_no.length() - 1); //Last char on the right
 
 		myPdf.isPageStreamsDeflated = isPageStreamsDeflated;
 
 		myPdf.addFont("H1","Helvetica");
-		myPdf.addFont("H2","Helvetica-Bold");
+		myPdf.addFont("H2","Helvetica-Bold"); //Arial-BoldMT
+		//myPdf.addFont("H2","Arial-BoldMT"); //Arial-BoldMT
 		try {
 			myPdf.addImage("ImgJPEG1", "C:\\1Hannes\\workspacePhoton\\pdf_create\\src\\main\\resources\\EFCLogo-30.jpg");
 		} catch (IOException e1) {
@@ -36,43 +174,53 @@ public class App
 		String Pg1 = readAllBytesJava7("C:\\1Hannes\\workspacePhoton\\pdf_create\\src\\main\\resources\\LetterHead.STM");
 
 		pageArr[0].streamText = Pg1; // Add the letterhead
-		placeGenericHeading(pageArr[0]);
-		switch (letterType) {
-        case "SectionalTitle":  placeSectionalTitleBody(pageArr[0]);
+		placeGenericHeading(pageArr[0],letterData);
+		switch (letterData.category) {
+        case "Sectional title":  placeSectionalTitleBody(pageArr[0]);
         	break;
-        case "OutsideInsurance":  placeOutsideInsuranceBody(pageArr[0]);
-        	break;
-        default: System.out.println( "Invalid letterType specified!" );
+        default: placeOutsideInsuranceBody(pageArr[0]);
         	break;
 		}
 		
+//		if (letterData.category != null)) {
+//			if (letterData.category.equals("Sectional title")) {
+//				placeSectionalTitleBody(pageArr[0]);
+//			}
+//			else {
+//				placeOutsideInsuranceBody(pageArr[0]);
+//			}
+//		    // Do something here.
+//		}
+		
 		try {
-			myPdf.saveAs("C:\\Temp\\" + letterType + ".PDF");
+			myPdf.saveAs(targetFolder + subFolder + "\\" + letterData.acct_type+letterData.acct_no + postfix + ".PDF");
 		} catch (IOException e) {
 			System.out.println( "pdf_create:-->Cannot save the PDF file!" );
 			e.printStackTrace();
 		}
 
-        System.out.println( "Built the PDF!" );
+        //System.out.println( "Built the PDF!" );
 
     }
     
-    private static void placeGenericHeading(PdfPage targetPage) {
+    private static void placeGenericHeading(PdfPage targetPage, FstLetter letterData) {
     	int lnPos = 733; 
     	int leftMargin = 86; 
     	int tabPos = 400; 
 		//pageArr[0].placeText(leftMargin, lnPos, "CERTIFIED MAIL", "H1", 10, "L", 0);
 		lnPos = 703;
-		targetPage.placeText(leftMargin, lnPos, "WF Zulu", "H1", 10, "L", 0);
+		targetPage.placeText(leftMargin, lnPos, letterData.name_1, "H1", 10, "L", 0);
 		lnPos = newLine(lnPos);
-		targetPage.placeText(leftMargin, lnPos, "P O Box 22", "H1", 10, "L", 0);
-		targetPage.placeText(tabPos, lnPos, "03 September 2012", "H1", 10, "L", 0);
+		targetPage.placeText(leftMargin, lnPos, letterData.address_line_1, "H1", 10, "L", 0);
+		targetPage.placeText(tabPos, lnPos, letterDate, "H1", 10, "L", 0);
 		lnPos = newLine(lnPos);
-		targetPage.placeText(leftMargin, lnPos, "Dube", "H1", 10, "L", 0);
+		targetPage.placeText(leftMargin, lnPos, letterData.address_line_2, "H1", 10, "L", 0);
 		lnPos = newLine(lnPos);
-		targetPage.placeText(leftMargin, lnPos, "SOWETO", "H1", 10, "L", 0);
+		targetPage.placeText(leftMargin, lnPos, letterData.address_line_3, "H1", 10, "L", 0);
 		lnPos = newLine(lnPos);
-		targetPage.placeText(leftMargin, lnPos, "1800", "H1", 10, "L", 0);
+		targetPage.placeText(leftMargin, lnPos, letterData.city, "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		targetPage.placeText(leftMargin, lnPos, letterData.zip, "H1", 10, "L", 0);
 		lnPos = newLine(lnPos);
 		lnPos = newLine(lnPos);
 		lnPos = newLine(lnPos);
@@ -82,14 +230,14 @@ public class App
 		targetPage.placeText(leftMargin, lnPos, "Dear Sir/Madam", "H1", 10, "L", 0);
 		lnPos = newLine(lnPos);
 		lnPos = newLine(lnPos);
-		targetPage.placeText(leftMargin, lnPos, "CLIENT: WILFRED FANI ZULU", "H1", 10, "L", 0);
+		targetPage.placeText(leftMargin, lnPos, "CLIENT: " + letterData.name_1, "H2", 10, "L", 0);
 		lnPos = newLine(lnPos);
-		targetPage.placeText(leftMargin, lnPos, "ACCOUNT NUMBER: ML0000424143", "H1", 10, "L", 0);
+		targetPage.placeText(leftMargin, lnPos, "ACCOUNT NUMBER: "+letterData.acct_type + letterData.acct_no, "H2", 10, "L", 0);
 		lnPos = newLine(lnPos);
-		targetPage.placeText(leftMargin, lnPos, "PROPERTY DESCRIPTION: 113 PINEHAVEN ESTATES", "H1", 10, "L", 0);
+		targetPage.placeText(leftMargin, lnPos, "PROPERTY DESCRIPTION: " + letterData.legal_desc, "H2", 10, "L", 0);
 		lnPos = newLine(lnPos);
 		lnPos = newLine(lnPos);
-		targetPage.placeText(leftMargin, lnPos, "Building insurance cover over EFC loan - ML XXXXXXXXXXX", "H2", 10, "L", 0);
+		targetPage.placeText(leftMargin, lnPos, "Building insurance cover over EFC loan - " + letterData.acct_type + " " + letterData.acct_no, "H2", 10, "L", 0);
 		lnPos = newLine(lnPos);
 		lnPos = newLine(lnPos);
     }
@@ -97,6 +245,7 @@ public class App
     private static void placeSectionalTitleBody(PdfPage targetPage) {
     	int lnPos = 487; 
     	int leftMargin = 86; 
+		lnPos = newLine(lnPos);
 		targetPage.placeText(leftMargin, lnPos, "According to our records you reside in a sectional title residence and therefore your building", "H1", 10, "L", 0);
 		lnPos = newLine(lnPos);
 		targetPage.placeText(leftMargin, lnPos, "insurance is managed by the Body Corporate.", "H1", 10, "L", 0);
@@ -134,6 +283,7 @@ public class App
     private static void placeOutsideInsuranceBody(PdfPage targetPage) {
     	int lnPos = 487; 
     	int leftMargin = 86; 
+    	lnPos = newLine(lnPos);
 		targetPage.placeText(leftMargin, lnPos, "Eskom Finance Company has granted you permission to have your building insurance", "H1", 10, "L", 0);
 		lnPos = newLine(lnPos);
 		targetPage.placeText(leftMargin, lnPos, "covered by an insurance company of your choice.", "H1", 10, "L", 0);
