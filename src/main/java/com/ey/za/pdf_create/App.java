@@ -72,7 +72,7 @@ public class App
     			.append("    Phoenix.dbo.ad_rm_stmt_cat ON ad_rm_stmt_cat.CATEGORY_ID = rm_fin_stmt.category_id \n")
     			.append("WHERE TT.pass_thru_amt = 'N' \n")
     			.append("AND ad_rm_addr_type.addr_type = 'Primary' \n")
-    			.append("AND ln_acct.class_code <> 120 \n")
+    			.append("AND ln_acct.class_code NOT IN (105,120,920) \n")
     			//.append("AND ad_rm_stmt_cat.category = 'Sectional title' \n")//Sectional title//Dwelling Unit
     			.append("ORDER BY \n")
     			.append("    TT.acct_type, \n")
