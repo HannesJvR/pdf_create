@@ -17,6 +17,10 @@ public class App
 	static String targetFolder = "C:\\Temp\\FST\\";
     public static void main( String[] args )
     {
+    	System.out.print("Open email bridge...");
+    	BridgeToOutlook outlook = new BridgeToOutlook();
+    	System.out.println("Email ready.");
+    	
 		String connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=Staging;user=test;password=test";
 		FstLetter thisLetter = new FstLetter();
 
@@ -334,6 +338,4 @@ public class App
 	private static int newLine(int curLine) {
 		return curLine - 12;
 	}
-
-
 }
