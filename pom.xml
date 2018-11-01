@@ -21,6 +21,12 @@
 			<artifactId>mssql-jdbc</artifactId>
 			<version>7.0.0.jre8</version>
 		</dependency>
+		<!-- add JACOB to access Outlook mail client -->
+		<dependency>
+			<groupId>com.hynnet</groupId>
+			<artifactId>jacob</artifactId>
+			<version>1.18</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<pluginManagement>
