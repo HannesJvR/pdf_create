@@ -50,6 +50,7 @@ public class FstLetter {
 	String description = "";
 	String category = "";
 	String class_code = "";
+	String filepath = "";
 
 	FstLetter() {
 		
