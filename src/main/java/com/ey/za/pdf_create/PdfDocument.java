@@ -1,15 +1,9 @@
 package com.ey.za.pdf_create;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 public class PdfDocument {
 	String STREAM_SPLIT = "\r\n";
@@ -61,8 +55,6 @@ public class PdfDocument {
 		doctitleID = 0;
 		isPageStreamsDeflated = false;
 
-		//-------------------------------------------above is new
-		int newObjectID = 0;
 		// System.out.println("PdfDocument Default Constructor.");
 		addObject("empty"); // Add empty object to ArrayList<PdfObject> objects to allow the position of
 							// object to be the same as the id of the object

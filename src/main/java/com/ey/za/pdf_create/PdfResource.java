@@ -1,7 +1,5 @@
 package com.ey.za.pdf_create;
 
-import java.util.Objects;
-
 public class PdfResource extends PdfObject {
 
 	public void renderPdfCharacters() {

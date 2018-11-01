@@ -2,16 +2,9 @@ package com.ey.za.pdf_create;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
-import java.awt.image.DataBufferByte;
-import java.awt.image.WritableRaster;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import javax.imageio.ImageIO;
 
 public class PdfXObject extends PdfObject {
@@ -182,5 +175,6 @@ public class PdfXObject extends PdfObject {
 		System.out.println("imageWidth = " + imageWidth);
 		System.out.println("imageHeight = " + imageHeight);
 */
+		System.out.println("colorModel.getPixelSize() = " + colorModel.getPixelSize());
 	}
 }
