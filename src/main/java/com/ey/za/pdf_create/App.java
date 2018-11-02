@@ -51,10 +51,6 @@ public class App
     			.append("     ,[email] \n")
     			.append("FROM \n")
     			.append("     [Phoenix].[dbo].[October2018Subsidy] \n").toString();
-//    			.append("WHERE SUBSTRING([Variance],1,1) = '-';").toString();
-    	
-    	/*      ,SUBSTRING([Variance],2,LEN([Variance])-1)
-   WHERE SUBSTRING([Variance],1,1) = '-';*/
     	
 		try {
 			// Load SQL Server JDBC driver and establish connection.
@@ -62,7 +58,7 @@ public class App
 			try (Connection connection = DriverManager.getConnection(connectionUrl)) {
 				System.out.println("Database ready.");
 
-				// READ demo
+				// READ data from database
 				System.out.print("Press ENTER to retrieve data...");
 				System.in.read();
 				System.out.println("Reading data from table...");
@@ -93,7 +89,7 @@ public class App
 						
 						createSubsidyLetter(thisLetter);
 				    	outlook.sendEmail("hannesj@mail.com", //thisLetter.email, 
-				    			"Recovery of overpayment of subsidy � October 2018 payroll.", 
+				    			"Recovery of overpayment of subsidy - October 2018 payroll.", 
 				    			EMAIL_BODY, 
 				    			thisLetter.filepath);
 					}
