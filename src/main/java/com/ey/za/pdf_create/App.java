@@ -22,6 +22,9 @@ public class App
     }
 
     private static void processAllSubsidyLetters() {
+    	String EMAIL_BODY = "Dear Colleague,\r\n\r\nPlease find attached for your information and kind attention." 
+        		+ "\r\n\r\nKind Regards,\r\nEFC Management";
+
     	System.out.print("Open email bridge...");
     	BridgeToOutlook outlook = new BridgeToOutlook();
     	System.out.println("Email ready.");
@@ -86,11 +89,13 @@ public class App
 								thisLetter.RecID + "|");
 						
 						
-						thisLetter.filepath = "C:\\temp\\FST\\" + thisLetter.employeeno + ".PDF";
+						thisLetter.filepath = "C:\\temp\\SubsidyLetters\\" + thisLetter.employeeno + ".PDF";
 						
 						createSubsidyLetter(thisLetter);
-				    	//outlook.sendEmail("hannesj@mail.com", "Test1", "This is the body of the message", thisLetter.filepath);
-				    	//outlook.sendEmail(thisLetter.email_addr_1, "Test1", "This is the body of the message", thisLetter.filepath);
+				    	outlook.sendEmail("hannesj@mail.com", //thisLetter.email, 
+				    			"Recovery of overpayment of subsidy � October 2018 payroll.", 
+				    			EMAIL_BODY, 
+				    			thisLetter.filepath);
 					}
 				}
 				connection.close();
