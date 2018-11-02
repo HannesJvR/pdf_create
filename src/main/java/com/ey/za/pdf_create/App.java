@@ -17,6 +17,167 @@ public class App
 	static String targetFolder = "C:\\Temp\\FST\\";
     public static void main( String[] args )
     {
+    	//processAllFstLetters();
+    	processAllSubsidyLetters();
+    }
+
+    private static void processAllSubsidyLetters() {
+    	System.out.print("Open email bridge...");
+    	BridgeToOutlook outlook = new BridgeToOutlook();
+    	System.out.println("Email ready.");
+    	
+		String connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=Staging;user=test;password=test";
+		SubsidyLetter thisLetter = new SubsidyLetter();
+		
+    	String sql = new StringBuilder()
+    			.append("USE Phoenix; \n")
+     			.append("SELECT TOP 10 \n")
+    			.append("     [Loan Application Number] AS LoanApplicationNumber \n")
+    			.append("     ,[PayrollCode] \n")
+    			.append("     ,[RecID] \n")
+    			.append("     ,CAST(CAST([Oct Payment] AS money) AS varchar(8)) AS OctPayment \n")
+    			.append("     ,CAST(CAST([Correct_Amount] AS money) AS varchar(8)) AS CorrectAmount \n")
+    			.append("     ,[Sep-Apps] AS SepApps \n")
+    			.append("     ,CAST(ABS(CAST([Variance] AS money)) AS varchar(8)) AS Variance \n")
+    			.append("     ,[Nov_Recon] AS NovRecon \n")
+    			.append("     ,[Recon] \n")
+    			.append("     ,[employeeno] \n")
+    			.append("     ,[party_id] \n")
+    			.append("     ,[FirstNames] \n")
+    			.append("     ,[Surname] \n")
+    			.append("     ,[email] \n")
+    			.append("FROM \n")
+    			.append("     [Phoenix].[dbo].[October2018Subsidy] \n").toString();
+//    			.append("WHERE SUBSTRING([Variance],1,1) = '-';").toString();
+    	
+    	/*      ,SUBSTRING([Variance],2,LEN([Variance])-1)
+   WHERE SUBSTRING([Variance],1,1) = '-';*/
+    	
+		try {
+			// Load SQL Server JDBC driver and establish connection.
+			System.out.print("Connecting to SQL Server... ");
+			try (Connection connection = DriverManager.getConnection(connectionUrl)) {
+				System.out.println("Database ready.");
+
+				// READ demo
+				System.out.print("Press ENTER to retrieve data...");
+				System.in.read();
+				System.out.println("Reading data from table...");
+				try (Statement statement = connection.createStatement();
+						ResultSet resultSet = statement.executeQuery(sql)) {
+					while (resultSet.next()) {
+
+		    			thisLetter.LoanApplicationNumber = resultSet.getString("LoanApplicationNumber").trim();
+						thisLetter.PayrollCode = resultSet.getString("PayrollCode").trim();
+						thisLetter.RecID = resultSet.getString("RecID").trim();
+						thisLetter.OctPayment = resultSet.getString("OctPayment").trim();
+						thisLetter.CorrectAmount = resultSet.getString("CorrectAmount").trim();
+						thisLetter.SepApps = resultSet.getString("SepApps").trim();
+						thisLetter.Variance = resultSet.getString("Variance").trim();
+						thisLetter.NovRecon = resultSet.getString("NovRecon").trim();
+						thisLetter.Recon = resultSet.getString("Recon").trim();
+						thisLetter.employeeno = resultSet.getString("employeeno").trim();
+						thisLetter.party_id = resultSet.getString("party_id").trim();
+						thisLetter.FirstNames = resultSet.getString("FirstNames").trim();
+						thisLetter.Surname = resultSet.getString("Surname").trim();
+						thisLetter.email = resultSet.getString("email").trim();
+
+						System.out.println(
+								thisLetter.RecID + "|");
+						
+						
+						thisLetter.filepath = "C:\\temp\\FST\\" + thisLetter.employeeno + ".PDF";
+						
+						createSubsidyLetter(thisLetter);
+				    	//outlook.sendEmail("hannesj@mail.com", "Test1", "This is the body of the message", thisLetter.filepath);
+				    	//outlook.sendEmail(thisLetter.email_addr_1, "Test1", "This is the body of the message", thisLetter.filepath);
+					}
+				}
+				connection.close();
+				System.out.println("All done.");
+			}
+		} catch (Exception e) {
+			System.out.println();
+			e.printStackTrace();
+		}
+    }
+    
+    private static void createSubsidyLetter(SubsidyLetter letterData) {
+		boolean isPageStreamsDeflated = false;
+		PdfDocument myPdf = new PdfDocument();
+
+		myPdf.isPageStreamsDeflated = isPageStreamsDeflated;
+
+		myPdf.addFont("H1","Helvetica");
+		//myPdf.addFont("H2","Helvetica-Bold"); //Arial-BoldMT
+		try {
+			myPdf.addImage("ImgJPEG1", "C:\\1Hannes\\workspacePhoton\\pdf_create\\src\\main\\resources\\EFCLogo-30.jpg");
+		} catch (IOException e1) {
+			System.out.println( "pdf_create:-->Cannot addImage ImgJPEG1 to the PDF file!" );
+			e1.printStackTrace();
+		}
+
+		myPdf.addPage();
+
+		PdfPage[] pageArr = new PdfPage[myPdf.pages.size()];
+		pageArr = myPdf.pages.toArray(pageArr);
+
+		String Pg1 = readAllBytesJava7("C:\\1Hannes\\workspacePhoton\\pdf_create\\src\\main\\resources\\LetterHead.STM");
+
+		pageArr[0].streamText = Pg1; // Add the letterhead
+    	int lnPos = 733; 
+    	int leftMargin = 86; 
+    	int tabPos = 400; 
+		//pageArr[0].placeText(leftMargin, lnPos, "CERTIFIED MAIL", "H1", 10, "L", 0);
+		lnPos = 703;
+		pageArr[0].placeText(leftMargin, lnPos, "Att: " + letterData.FirstNames + " " + letterData.Surname, "H1", 10, "L", 0);
+		pageArr[0].placeText(tabPos, lnPos, "Date: 01 November 2018", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		pageArr[0].placeText(tabPos, lnPos, "Enquiries: Local EFC Office", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+			lnPos = newLine(lnPos);
+		pageArr[0].placeText(leftMargin, lnPos, "Dear Mr/Ms " + letterData.Surname, "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		pageArr[0].placeText(leftMargin, lnPos, "Please note that you were erroneously overpaid on your subsidy during the October 2018 payroll ", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		pageArr[0].placeText(leftMargin, lnPos, "run. ", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		pageArr[0].placeText(leftMargin, lnPos, "Your subsidy amount should be R " + letterData.CorrectAmount + " and you received R " + letterData.OctPayment, "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		pageArr[0].placeText(leftMargin, lnPos, "The overpaid amount of R " + letterData.Variance + " will be deducted from your salary with the November 2018 ", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		pageArr[0].placeText(leftMargin, lnPos, "payroll run. ", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		pageArr[0].placeText(leftMargin, lnPos, "Should you have any queries please contact your local EFC office. ", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		pageArr[0].placeText(leftMargin, lnPos, "Kind regards ", "H1", 10, "L", 0);
+		lnPos = newLine(lnPos);
+		lnPos = newLine(lnPos);
+		pageArr[0].placeText(leftMargin, lnPos, "EFC Management", "H1", 10, "L", 0);
+			
+		
+		try {
+			myPdf.saveAs(letterData.filepath);
+		} catch (IOException e) {
+			System.out.println( "pdf_create:-->Cannot save the PDF file!" );
+			e.printStackTrace();
+		}
+
+        //System.out.println( "Built the PDF!" );
+
+    }
+    
+    private static void processAllFstLetters() {
     	System.out.print("Open email bridge...");
     	BridgeToOutlook outlook = new BridgeToOutlook();
     	System.out.println("Email ready.");
