@@ -184,6 +184,7 @@ public class App
     	
 		String connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=Staging;user=test;password=test";
 		FstLetter thisLetter = new FstLetter();
+		String subFolder = ""; 
 
     	String sql = new StringBuilder()
     			.append("USE Phoenix; \n")
@@ -245,14 +246,14 @@ public class App
     	
 		try {
 			// Load SQL Server JDBC driver and establish connection.
-			System.out.print("Connecting to SQL Server ... ");
+			System.out.print("Connecting to SQL Server... ");
 			try (Connection connection = DriverManager.getConnection(connectionUrl)) {
-				System.out.println("Done.");
+				System.out.println("Database ready.");
 
 				// READ demo
 				System.out.print("Press ENTER to retrieve data...");
 				System.in.read();
-				System.out.print("Reading data from table...");
+				System.out.println("Reading data from table...");
 				try (Statement statement = connection.createStatement();
 						ResultSet resultSet = statement.executeQuery(sql)) {
 					while (resultSet.next()) {
@@ -302,7 +303,12 @@ public class App
 								thisLetter.addr_type + "|" + 
 								thisLetter.legal_desc + "|");
 						
+						subFolder = thisLetter.acct_no.substring(thisLetter.acct_no.length() - 1); //Last char on the right
+						thisLetter.filepath = targetFolder + subFolder + "\\" + thisLetter.acct_type+thisLetter.acct_no + postfix + ".PDF";
+						
 						createFstLetter(thisLetter);
+				    	//outlook.sendEmail("hannesj@mail.com", "Test1", "This is the body of the message", thisLetter.filepath);
+				    	//outlook.sendEmail(thisLetter.email_addr_1, "Test1", "This is the body of the message", thisLetter.filepath);
 					}
 				}
 				connection.close();
@@ -312,12 +318,12 @@ public class App
 			System.out.println();
 			e.printStackTrace();
 		}
+
     }
     
     private static void createFstLetter(FstLetter letterData) {
 		boolean isPageStreamsDeflated = false;
 		PdfDocument myPdf = new PdfDocument();
-		String subFolder = letterData.acct_no.substring(letterData.acct_no.length() - 1); //Last char on the right
 
 		myPdf.isPageStreamsDeflated = isPageStreamsDeflated;
 
@@ -358,7 +364,7 @@ public class App
 //		}
 		
 		try {
-			myPdf.saveAs(targetFolder + subFolder + "\\" + letterData.acct_type+letterData.acct_no + postfix + ".PDF");
+			myPdf.saveAs(letterData.filepath);
 		} catch (IOException e) {
 			System.out.println( "pdf_create:-->Cannot save the PDF file!" );
 			e.printStackTrace();
